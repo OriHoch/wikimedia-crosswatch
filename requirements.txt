@@ -1,0 +1,15 @@
+gevent
+kombu
+requests-oauthlib<1.2.0
+requests[security]
+mwoauth
+mediawiki-utilities
+mysqlclient
+flask-oauthlib
+flask
+sockjs-tornado
+tornado-redis
+tornado
+celery
+redis
+future
