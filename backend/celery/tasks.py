@@ -38,6 +38,8 @@ def initial_task(**kwargs):
     preload_projects = kwargs.get('projects', [])
     redis_channel = kwargs.get('redis_channel', None)
 
+    preload_projects = ['hewiki', 'enwiki']
+
     mw = MediaWiki(access_token=access_token, redis_channel=redis_channel)
     username = mw.user_info().name
     wikis = mw.wikis()
@@ -49,24 +51,24 @@ def initial_task(**kwargs):
         notificationgetter.delay(wiki=wiki, **kwargs)
 
     db = MySQLdb.connect(
-        host='centralauth.labsdb',
+        host=config.sql_host,
         user=config.sql_user,
         passwd=config.sql_passwd,
         charset='utf8'
     )
 
     projects = []
-    with closing(db.cursor()) as cur:
-        cur.execute("SELECT lu_wiki FROM centralauth_p.localuser WHERE lu_name=%s;", [username])  # NOQA
-        result = cur.fetchall()
-        for row in result:
-            project = row[0].decode("utf-8")
-            try:
-                wiki = wikis[project]
-                if 'closed' not in wiki and project not in preload_projects:
-                    projects.append(wiki)
-            except KeyError:
-                logger.error("Could not find %s in list of wikis" % project)
+    # with closing(db.cursor()) as cur:
+    #     cur.execute("SELECT lu_wiki FROM centralauth_p.localuser WHERE lu_name=%s;", [username])  # NOQA
+    #     result = cur.fetchall()
+    #     for row in result:
+    #         project = row[0].decode("utf-8")
+    #         try:
+    #             wiki = wikis[project]
+    #             if 'closed' not in wiki and project not in preload_projects:
+    #                 projects.append(wiki)
+    #         except KeyError:
+    #             logger.error("Could not find %s in list of wikis" % project)
     db.close()
 
     for chunk in chunks(projects, 50):
