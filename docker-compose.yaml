@@ -1,0 +1,57 @@
+version: '3.2'
+
+services:
+
+  redis:
+    image: redis
+    restart: always
+    ports:
+    - "6379:6379"
+    networks:
+    - crosswatch
+
+  db:
+    image: mysql:5
+    restart: always
+    ports:
+      - "3306:3306"
+    networks:
+      - crosswatch
+    environment:
+      MYSQL_ROOT_PASSWORD: "123456"
+
+  crosswatch:
+    depends_on:
+    - redis
+    - db
+    image: crosswatch
+    build:
+      context: .
+    restart: "no"
+    ports:
+    - "5000:5000"
+    networks:
+    - crosswatch
+    volumes:
+    - .:/usr/src
+    environment:
+      TOOL_NAME: crosswatch
+      MAIL_SERVER: ""
+      EMAIL: "tools.crosswatch@tools.wmflabs.org"
+      REDIS_SERVER: redis
+      REDIS_PORT: "6379"
+      REDIS_DB: "3"
+      SQL_HOST: db
+      SQL_USER: root
+      SQL_PASSWORD: "123456"
+    env_file:
+      # OAUTH_CONSUMER_KEY=
+      # OAUTH_CONSUMER_SECRET=
+      # python3 -c 'import binascii,os;print(binascii.hexlify(os.urandom(8)).decode())'
+      # REDIS_PREFIX=
+      # BASE_SCHEME=http
+      # BASE_HOST=localhost:5000
+      - .env
+
+networks:
+  crosswatch:

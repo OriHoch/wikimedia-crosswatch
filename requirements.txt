@@ -1,5 +1,5 @@
-gevent
-kombu
+gevent==1.2.2
+# kombu  # a specific version of kombu is installed from setup.py
 requests-oauthlib<1.2.0
 requests[security]
 mwoauth
@@ -9,7 +9,7 @@ flask-oauthlib
 flask
 sockjs-tornado
 tornado-redis
-tornado
-celery
-redis
+tornado<5
+celery<4
+redis==2.10.6
 future

@@ -70,7 +70,7 @@ class NoChacheStaticFileHandler(StaticFileHandler):
 
 
 def run(port):
-    logging.basicConfig(level=logging.INFO,
+    logging.basicConfig(level=logging.DEBUG,
                         format='%(asctime)s %(name)-12s %(levelname)-8s' +
                                ' %(message)s',
                         datefmt='%m-%d %H:%M')

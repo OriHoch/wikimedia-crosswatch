@@ -1,0 +1,32 @@
+# -*- coding: utf-8 -*-
+"""Crosswatch config"""
+from __future__ import unicode_literals
+
+import socket
+
+toolname = '__TOOL_NAME__'
+# redis_server = 'tools-redis'
+
+# mail config for celery error mails
+mail_server = '__MAIL_SERVER__'
+email = '__EMAIL__'
+
+# if not socket.gethostname().startswith('tools'):
+#     redis_server = 'localhost'
+redis_server = '__REDIS_SERVER__'
+redis_port = __REDIS_PORT__
+redis_db = __REDIS_DB__
+
+# random string, can be generated using:
+# python3 -c 'import binascii,os;print(binascii.hexlify(os.urandom(8)).decode())'
+redis_prefix = '__REDIS_PREFIX__'
+
+sql_host = "__SQL_HOST__"
+sql_user = '__SQL_USER__'
+sql_passwd = '__SQL_PASSWORD__'
+
+oauth_consumer_key = '__OAUTH_CONSUMER_KEY__'
+oauth_consumer_secret = '__OAUTH_CONSUMER_SECRET__'
+
+from mwoauth import ConsumerToken
+consumer_token = ConsumerToken(oauth_consumer_key, oauth_consumer_secret)
