@@ -13,7 +13,7 @@ if [ "$*" == "" ]; then
     sed -i "s/__REDIS_DB__/${REDIS_DB}/" /usr/src/backend/config.py
     sed -i "s/__REDIS_PREFIX__/${REDIS_PREFIX}/" /usr/src/backend/config.py
     sed -i "s/__SQL_HOST__/${SQL_HOST}/" /usr/src/backend/config.py
-    sed -i "s/__SQL_Used__/${SQL_USER}/" /usr/src/backend/config.py
+    sed -i "s/__SQL_USER__/${SQL_USER}/" /usr/src/backend/config.py
     sed -i "s/__SQL_PASSWORD__/${SQL_PASSWORD}/" /usr/src/backend/config.py
     sed -i "s/__OAUTH_CONSUMER_KEY__/${OAUTH_CONSUMER_KEY}/" /usr/src/backend/config.py
     sed -i "s/__OAUTH_CONSUMER_SECRET__/${OAUTH_CONSUMER_SECRET}/" /usr/src/backend/config.py

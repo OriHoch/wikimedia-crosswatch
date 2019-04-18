@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "crosswatch.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "crosswatch.name" . }}
+    helm.sh/chart: {{ include "crosswatch.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "crosswatch.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "crosswatch.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 5000
+              protocol: TCP
+          env:
+            - name: TOOL_NAME
+              value: crosswatch
+            - name: MAIL_SERVER
+              value: ""
+            - name: EMAIL
+              value: "tools.crosswatch@tools.wmflabs.org"
+            - name: REDIS_SERVER
+              value: redis
+            - name: REDIS_PORT
+              value: "6379"
+            - name: REDIS_DB
+              value: "3"
+            - name: SQL_HOST
+              value: db
+            - name: SQL_USER
+              value: root
+            - name: SQL_PASSWORD
+              value: "123456"
+          envFrom:
+            - secretRef:
+                name: {{ include "crosswatch.name" . }}
+                # kubectl -n crosswatch create secret generic crosswatch --from-literal=OAUTH_CONSUMER_KEY= --from-literal=OAUTH_CONSUMER_SECRET= --from-literal=REDIS_PREFIX=
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
