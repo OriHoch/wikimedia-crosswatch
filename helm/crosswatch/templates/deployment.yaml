@@ -35,7 +35,7 @@ spec:
             - name: EMAIL
               value: "tools.crosswatch@tools.wmflabs.org"
             - name: REDIS_SERVER
-              value: redis
+              value: localhost
             - name: REDIS_PORT
               value: "6379"
             - name: REDIS_DB
@@ -52,6 +52,8 @@ spec:
                 # kubectl -n crosswatch create secret generic crosswatch --from-literal=OAUTH_CONSUMER_KEY= --from-literal=OAUTH_CONSUMER_SECRET= --from-literal=REDIS_PREFIX=
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+        - name: redis
+          image: redis
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

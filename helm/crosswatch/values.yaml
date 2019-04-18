@@ -6,14 +6,14 @@ replicaCount: 1
 
 image:
   repository: uumpa/wikimedia-crosswatch
-  tag: 64d3857
+  tag: fdb21c6
   pullPolicy: IfNotPresent
 
 nameOverride: ""
 fullnameOverride: ""
 
 service:
-  type: ClusterIP
+  type: NodePort
   port: 80
 
 ingress:
