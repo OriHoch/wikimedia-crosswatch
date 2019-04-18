@@ -226,7 +226,7 @@ class MediaWiki(object):
         return wiki
 
     def _flaggedrevs_wikis(self):
-        url = "https://noc.wikimedia.org/conf/flaggedrevs.dblist"
+        url = "https://noc.wikimedia.org/conf/dblists/flaggedrevs.dblist"
         response = requests.get(url, headers=self.headers)
         response.raise_for_status()
 
