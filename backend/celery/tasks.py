@@ -38,11 +38,12 @@ def initial_task(**kwargs):
     preload_projects = kwargs.get('projects', [])
     redis_channel = kwargs.get('redis_channel', None)
 
-    preload_projects = ['hewiki', 'enwiki']
-
     mw = MediaWiki(access_token=access_token, redis_channel=redis_channel)
     username = mw.user_info().name
     wikis = mw.wikis()
+
+    # preload_projects = ['hewiki', 'enwiki']
+    # preload_projects = [wiki_id for wiki_id, wiki in wikis.items() if 'closed' not in wiki]
 
     # Use cache of known projects to bypass sometimes blocking mysql check
     for project in preload_projects:

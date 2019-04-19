@@ -100,12 +100,20 @@ def run(port):
     static_path = os.path.join(pwd_path, 'public')
     index_path = os.path.join(pwd_path, 'public/' + toolname + '/index.html')
     static_handlers = [
-        (r"/()", NoChacheStaticFileHandler, {"path": index_path}),
-        (r"/" + toolname + r"/\w*()", NoChacheStaticFileHandler,
-         {"path": index_path}),
-        (r"/" + toolname, RedirectHandler, {"url": "/" + toolname + "/"}),
-        (r"/(.*)", StaticFileHandler, {"path": static_path})
-        ]
+        (
+            r"/()", NoChacheStaticFileHandler, {"path": index_path}
+        ),
+        (
+            r"/" + toolname + r"/\w*()", NoChacheStaticFileHandler,
+            {"path": index_path}
+        ),
+        (
+            r"/" + toolname, RedirectHandler, {"url": "/" + toolname + "/"}
+        ),
+        (
+            r"/(.*)", StaticFileHandler, {"path": static_path}
+        )
+    ]
 
     routes = oauthrouter + sockjsrouter.urls + static_handlers
     app = Application(routes)

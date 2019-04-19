@@ -83,7 +83,7 @@ class MWOAuth(object):
                          'secret': resp['oauth_token_secret']}
             mwo_token = json.dumps(mwo_token)
 
-            resp = make_response(redirect('/' + self.toolname + '/'))
+            resp = make_response(redirect('/' + self.toolname + '/wikis.html'))
             resp.set_cookie(self.toolname + '.auth', mwo_token,
                             max_age=30*24*60*60,
                             path='/' + self.toolname + '/')

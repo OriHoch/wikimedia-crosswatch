@@ -1,0 +1,42 @@
+<script>
+    function setCrosswatchConfig(crosswatch_config, good_wikis) {
+        crosswatch_config.projectsSelected = good_wikis;
+        crosswatch_config.projectsList = good_wikis;
+        localStorage["crosswatch.config"] = JSON.stringify(crosswatch_config);
+    }
+
+    function submit() {
+        let selected_wikis = document.getElementById('wikis').value.split(',');
+        let good_wikis = [];
+        for (let i=0; i < selected_wikis.length; i++) {
+            let wiki = selected_wikis[i].trim();
+            if (wiki.length > 2) {
+                good_wikis.push(wiki)
+            }
+        }
+        console.log(good_wikis);
+        let crosswatch_config_json = localStorage["crosswatch.config"];
+        if (crosswatch_config_json) {
+            setCrosswatchConfig(JSON.parse(crosswatch_config_json), good_wikis);
+        } else {
+            setCrosswatchConfig({}, good_wikis);
+        }
+        window.location.href = '/crosswatch';
+    }
+</script>
+
+<h1>Crosswatch</h1>
+
+<h2>Please choose wikis to cross-watch</h2>
+
+<p>
+    Input comma-separated wikis from <a href="https://noc.wikimedia.org/conf/highlight.php?file=dblists/all.dblist" target="_blank">this list</a>:
+</p>
+
+<p>
+    <input id="wikis" type="text" value="enwiki,dewiki,hewiki" style="width:90%;"/>
+</p>
+
+<p>
+    <input type="submit" onclick="submit()"/>
+</p>

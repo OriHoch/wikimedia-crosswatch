@@ -19,6 +19,8 @@ spec:
         app.kubernetes.io/name: {{ include "crosswatch.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
+      strategy:
+        type: Recreate
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -35,13 +37,13 @@ spec:
             - name: EMAIL
               value: "tools.crosswatch@tools.wmflabs.org"
             - name: REDIS_SERVER
-              value: localhost
+              value: 127.0.0.1
             - name: REDIS_PORT
               value: "6379"
             - name: REDIS_DB
               value: "3"
             - name: SQL_HOST
-              value: db
+              value: 127.0.0.1
             - name: SQL_USER
               value: root
             - name: SQL_PASSWORD
@@ -54,6 +56,11 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
         - name: redis
           image: redis
+        - name: db
+          image: mysql:5
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: "123456"
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
