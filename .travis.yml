@@ -1,0 +1,21 @@
+language: bash
+sudo: required
+env:
+  global:
+  - TRAVIS_CI_OPERATOR=1
+  - secure: "NYtGqFIxhlL3TpUBIh69W9F7lzRGtRF6YGe4XSEcpZLSPglVO7CY349VclkEllaeM0mIox6rnzd0s5Nq4V+v9R/cuypw1laBv5H0tkgDEEiUlwMwMfCTmUI+o/tQgIa2fQqtOZdFLhIDUHz7gyqI/j2iWjYfY2TbhGIAJOdOlVC4fB70Jy0F9iizo89RY063HycKTw9n3gAlxGbEJcozRHD5Naim0KTcxMI41+LXfJXElxEHgry9tx8UBJdiu1goQ/+4Q6UyqUjyySvzlglXad1bUEz5GZKVTYjMZrTTP7+9x/DyQ+ExS7RNQUKC6zfOLEkmtNXFlayG0RalxaZBfnIYjZvf9fCT6tlAhW55uTJIgiRSd/JCVAfjwe3LXbtV7bmXoUpuQtgsU6b98EoSogl3XS35ibaoFjpELyRiSe3YKWkNAi0zjKonHcBfdIiX1TWUCU2Sk1XTILpmG3kWf1ZAgvHAiVP1nSAUsjd2rQm7B/ZldLcVsbIJ4+K2EAsb5XG6Xw6CJde4MRkpQCTnf1XZnNKJFl2p2VnTpeWhM28FQH3vgCNxSkbP+QKbCoIhJT0EIkS9FU3k7+/gyaHvFhRhynlzETzFPpCTtcRLYjGqfUVO3/YaHOzCgvC+PNUYb0tgoR7V21dofv8sANGvuEO5PAUYnYb8Vv9ztkC1Y8g="
+  - secure: "EupRH52RvVdW9CJql12EzkDUR2qtRLq/XUdwRj+RxRH7pVjiCzKcbceDQLMb02omdWOQ7GxA0LIsjQ8cxk5P0Qh3is5C32jSzI/+eaikyiXrbNml7YUmju04t4Ion1FEUPF8T2NBitLcIgPOrt50jPPrOaaVUvkxJSv3TUOOiaqJaePDROJPuB7COofjWz7tvnDKCVYF6YFQb9pOu0czSdna2Y8QIuWN7vnhVTlXYwhf1Eb0PGKY/yb6RMx56yfRulE2dm1sxZiJ0FMoncqUhu5Bff2AB+32uV1BI7siqZuxJhcAcLgQE4uy3k7gr7LfKRt2Hne7F9+5FO3HEpt8pvStiLV/Z8ew22LR1BfFKE3r3jouUjFymccoq2YG2VNkukacpAS/5KNWBOsyz2R9rH/NrIBdkgcybdg0wNJnOtoUUJ5IYbIyv7B2DXsszC5nPjYwMUodeJie2WvgR7XoVE75JwGB4zcgh5eZxRTujTiSxOaqfwoecLwYrRIaTIbcHc8SCZUEegyspS1XENfSNhE4315fbTv4EYN55hhHf6q4i3OH8pi4BhME2KfIbVXfSEdmF90cEG8YpMTIX+GItm7/oYJI4rX+sIT6+TF2DHnd/M4xVpPeFKnaU5e8piirbN0fSwZV6WWDmHfiHGiVxP9WN5Y2uIMSs55JNBTzhJI="
+services:
+- docker
+install:
+- curl -L https://raw.githubusercontent.com/OriHoch/travis-ci-operator/master/travis_ci_operator.sh > $HOME/bin/travis_ci_operator.sh
+- bash $HOME/bin/travis_ci_operator.sh init
+- travis_ci_operator.sh docker-login
+script:
+- docker build -t uumpa/wikimedia-crosswatch:latest .
+deploy:
+  provider: script
+  script: docker push uumpa/wikimedia-crosswatch:latest
+  on:
+    branch: master
+    condition: $TRAVIS_TAG = "" && $TRAVIS_PULL_REQUEST = "false"
