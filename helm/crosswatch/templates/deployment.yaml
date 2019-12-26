@@ -8,6 +8,8 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
+  strategy:
+    type: Recreate
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
@@ -19,8 +21,6 @@ spec:
         app.kubernetes.io/name: {{ include "crosswatch.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
-      strategy:
-        type: Recreate
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
